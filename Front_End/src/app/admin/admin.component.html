@@ -8,6 +8,7 @@ body{
 h1{
   text-align:center;
   padding:30px 5px;
+  /* margin-top: 20px; */
 }
 button{
   margin:5px;
@@ -24,7 +25,7 @@ button{
 </style>
 
 <body>
-<h1><b>😎Welcome Admin😎</b></h1>
+<h1><b>Welcome Admin</b></h1>
 <!--to display form-->
 <div class="card" *ngIf="!valid">
   <div class="card-body">
@@ -44,7 +45,7 @@ button{
           </div>
         </form>
   </div>
-  
+
 </div>
 
 <!-- display form end-->
@@ -85,12 +86,12 @@ button{
             <td>{{donor.address}}</td>
             <td>{{donor.contact}}</td>
             <td><button class="btn btn-danger" (click)="deleteDonor(donor)">Delete</button></td>
-		</tr> 
+		</tr>
   </tbody>
 </table>
 </div>
- 
- <div *ngIf="showreceivers && valid"> 
+
+ <div *ngIf="showreceivers && valid">
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -122,6 +123,5 @@ button{
 </div>
 
 </body>
-</html>                                		                            
+</html>
 
- 

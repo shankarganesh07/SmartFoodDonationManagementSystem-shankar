@@ -7,6 +7,7 @@ const receiver= require('../models/receiversignup');//donormodel contain  export
 
 //to get 
 router.get('/getallreceivers',(req,res)=>{
+    console.log('get all donors request',req.body)
     receiver.find((err,doc)=>{
         if(!err)
         {

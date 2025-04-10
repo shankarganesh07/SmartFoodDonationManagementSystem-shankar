@@ -13,7 +13,7 @@ export class Donor1Component implements OnInit {
 
   donoremail:string;
   plotbar:boolean=false;
-  showreceivers:boolean=false;//to display all receivers 
+  showreceivers:boolean=false;//to display all receivers
   donate:boolean=false;//to select items to donate
   showlocation:boolean=false;//to search ngo
   showdelete:boolean=false;
@@ -33,9 +33,9 @@ export class Donor1Component implements OnInit {
     sessionStorage.setItem('status', 'on_page');
     //taking email from local storage and set in session storage
     sessionStorage.setItem('email',localStorage.getItem('email'));
-  
+
     this.email=sessionStorage.getItem('email');
-    
+
   }
 
   getallreceivers() {
@@ -45,8 +45,8 @@ export class Donor1Component implements OnInit {
       //first set othe false so it will not display other componets
       this.showlocation=false;
       this.donate=false;
-      
-     
+
+
       this.showreceivers = true;
       this.receiver.getReceivers().subscribe((res) => {
         this.receiverarray = res as Receiverdata[];
@@ -56,7 +56,7 @@ export class Donor1Component implements OnInit {
     else {
       this.showreceivers = false;
     }
-    
+
   }
 
   displayDonateItems()
@@ -70,36 +70,44 @@ export class Donor1Component implements OnInit {
       //set true and  display this component
       this.donate = true;
     }
-    else 
+    else
       this.donate=false;
   }
 
- 
+
   donateToThisNgo(receiver:Receiverdata)
   {
     //  this.donoremail = sessionStorage.getItem('email');
     this.d = new Donordata(this.email,receiver.email,this.food,this.cloth,this.money,this.other);
+    console.log('is food email sent 1',this.d)
 
-   
     if(this.food ||  this.cloth || this.money || this.other)//if selected
     {
-      this.donorservice.sendEmail(this.d).subscribe((res) => {
-        if (res == true) {
-          window.alert('Notification send to NGO ' + receiver.ngoname);
+      this.donorservice.sendEmailThroughPostMark(this.d).subscribe((res) =>{
+
+        if(res.Message == 'OK'){
+          window.alert('Email sended to receiver successfully');
           //After donation all items set to false again
           this.food=false;
           this.cloth=false;
           this.money=false;
           this.other=false;
-
-
-         
         }
+    // if (res == true) {
+    //       window.alert('Notification send to NGO ' + receiver.ngoname);
+    //       //After donation all items set to false again
+    //       this.food=false;
+    //       this.cloth=false;
+    //       this.money=false;
+    //       this.other=false;
+
+    //     }
         else
           console.log('error in sending notification');
       })
+
       sessionStorage.setItem('id','yes');
-      
+
     }
     else
       window.alert('first select Items to donate');
@@ -124,7 +132,7 @@ export class Donor1Component implements OnInit {
   {
     if(window.confirm('Are you sure want to delete'))
     {
-   
+
      var donordata=new Donordata(this.email,'',true,true,true,true);
       this.donorservice.deleteByPermission(donordata).subscribe((res)=>{
           if(res==true)
@@ -132,17 +140,17 @@ export class Donor1Component implements OnInit {
             // sessionStorage.clear();
             sessionStorage.setItem('logout', 'yes')
             this.router.navigate(['home']);
-            
+
           }
           else
             console.log('error in delete donor inside particulat donor')
       });
-      
+
     }
     else
       console.log('not');
-    
-     
+
+
   }
 
   //for Logout

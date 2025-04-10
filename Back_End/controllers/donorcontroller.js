@@ -1,5 +1,6 @@
 const express=require('express');
 const path=require('path')
+const axios = require('axios');
 const router=express.Router()
 const mangoose=require('mongoose')
 const donor=require('../models/donorsignup.js');//donormodel contain  exported model of donorsigup
@@ -11,8 +12,13 @@ require('dotenv').config();
 //for email sending end
 
 
+const POSTMARK_API_URL = 'https://api.postmarkapp.com/email';
+const SERVER_TOKEN = '2a10a0b9-d204-45bc-9d4d-b9fd1b9a3458'; // Replace with your actual Postmark token
+
+
 //to get data of all donors
 router.get('/getalldonors',(req,res)=>{
+ 
     donor.find((err, docs) => {
         if (!err) {
             console.log('Display all donors'),res.send(docs);
@@ -124,7 +130,7 @@ router.post('/deletebypermission',(req,res)=>{
 
 
 //to send email notification
-router.post('/sendemail',(req,res)=>{
+router.post('/sendemailll',(req,res)=>{
     var donoraddress=req.body.email;
     var receiveraddress=req.body.address;
     console.log(req.body);
@@ -236,6 +242,26 @@ router.post('/recoverpass',(req,res)=>{
             
     })
     
+})
+
+
+router.post('/sendemail', async (req, res) => {
+  
+    try {
+     // console.log('get email data request',req.body)
+        const response =  await axios.post(POSTMARK_API_URL, req.body, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Postmark-Server-Token': SERVER_TOKEN
+            }
+        });
+       
+        res.status(200).json(response.data);
+    } catch (error) {
+      //console.log('got error response',error)
+        res.status(500).json({ error: error.response?.data || 'Error sending email' });
+    }
 })
 
 //exporting module
