@@ -26,3 +26,23 @@
 
 ## 📁 Project Structure
 
+Food Donation Management System/ │ ├── Back_End/ │ ├── controllers/ │ ├── models/ │ ├── node_modules/ │ ├── db.js │ ├── index.js │ ├── package.json │ ├── Front_End/ (Angular app) │ ├── src/ │ ├── angular.json │ ├── .gitignore ├── Gather & Give Project Report.pdf └── package-lock.json
+
+
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js
+- Angular CLI
+- MongoDB installed and running
+
+### Backend Setup
+
+```bash
+cd Back_End
+npm install
+node index.js
